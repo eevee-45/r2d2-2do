@@ -1,5 +1,6 @@
 import Image from "next/image";
-
+import { UserButton } from "@clerk/nextjs";
+ 
 export default function Home() {
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
@@ -24,6 +25,9 @@ export default function Home() {
               height={24}
               priority
             />
+            <div className="h-screen">
+              <UserButton />
+            </div>
           </a>
         </div>
       </div>

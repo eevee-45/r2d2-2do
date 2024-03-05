@@ -1,7 +1,7 @@
 import pg from 'pg';
 const { Pool } = pg;
 
-const PG_URI ="postgres://mngazamo:BV4YEgDeKGaO8LBnASchmlEvwmWxfH6h@ruby.db.elephantsql.com/mngazamo";
+const PG_URI =process.env.PG_URI;
 
 const pool = new Pool({
   connectionString: PG_URI

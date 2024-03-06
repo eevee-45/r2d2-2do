@@ -1,8 +1,8 @@
-import { queryObject } from '../models/model.js';
+import { queryObject } from "../models/model.js";
 
 export const getFeed = (req, res, next) => {
-  const feedId = req.params.id; 
-  
+  const feedId = req.params.id;
+
   console.log(feedId);
 
   // Adjust this based on how you pass the feedId
@@ -12,13 +12,11 @@ export const getFeed = (req, res, next) => {
     values: [feedId],
   };
 
-  try{
+  try {
     return next();
+  } catch (error) {
+    console.log(error);
   }
-  catch() {
-    
-  }
-
 
   // const queryString = `
   //   SELECT

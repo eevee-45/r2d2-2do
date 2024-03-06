@@ -1,18 +1,24 @@
 import { queryObject } from '../models/model.js';
 
 export const getFeed = (req, res, next) => {
-  const feedId = req.query.feedId; // Adjust this based on how you pass the feedId
+  const feedId = req.params.id; 
+  
+  console.log(feedId);
+
+  // Adjust this based on how you pass the feedId
 
   const query = {
     text: `SELECT f.id AS feed_id, c.id AS checklist_id, c.name AS checklist_name, t.id AS task_id, t.content AS task_content, t.done AS task_done FROM "public"."feed" f LEFT JOIN "public"."checklist" c ON f.id = c.feed_id LEFT JOIN "public"."tasks" t ON c.id = t.checklist_id WHERE f.id = $1;`,
     values: [feedId],
   };
 
-  queryObject.query(query)
-  .then(data => {
-    console.log(data);
-    next();
-  })
+  try{
+    return next();
+  }
+  catch() {
+    
+  }
+
 
   // const queryString = `
   //   SELECT

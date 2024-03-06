@@ -8,8 +8,15 @@ const pool = new Pool({
 });
 
 export const queryObject = {
-  query: (text, params, callback) => {
-    console.log('executed query', text);
-    return pool.query(text, params, callback);
+  query: async (text, params, callback) => {
+    try{
+      console.log('executed query', text);
+      const result = await pool.query(text, params);
+      console.log('reached query');
+      return result.rows;
+    }catch(error){
+      return error;
+    }
+     
   }
 };

@@ -4,8 +4,9 @@ import cors from 'cors';
 import path from 'path';
 import bodyParser from 'body-parser';
 import { getFeed } from './controllers/feed.js';
-import { signup } from './controllers/signUp.js';
+import { signup } from './controllers/signup.js';
 import { login } from './controllers/login.js';
+import { queryObject } from './models/model.js';
 
 const app = express();
 
@@ -48,7 +49,7 @@ app.use((err, req, res, next) => {
 app.post("/todos", async (req, res) => {
   try {
     const { description } = req.body;
-    const newTodo = await pool.query(
+    const newTodo = await queryObject.query(
       "INSERT INTO todo (description) VALUES($1) RETURNING *",
       [description]
     );
@@ -63,7 +64,7 @@ app.post("/todos", async (req, res) => {
 
 app.get("/todos", async (req, res) => {
   try {
-    const allTodos = await pool.query("SELECT * FROM todo");
+    const allTodos = await queryObject.query("SELECT * FROM todo");
     res.json(allTodos.rows);
   } catch (err) {
     console.error(err.message);
@@ -75,7 +76,7 @@ app.get("/todos", async (req, res) => {
 app.get("/todos/:id", async (req, res) => {
   try {
     const { id } = req.params;
-    const todo = await pool.query("SELECT * FROM todo WHERE todo_id = $1", [
+    const todo = await queryObject.query("SELECT * FROM todo WHERE todo_id = $1", [
       id
     ]);
 
@@ -91,7 +92,7 @@ app.put("/todos/:id", async (req, res) => {
   try {
     const { id } = req.params;
     const { description } = req.body;
-    const updateTodo = await pool.query(
+    const updateTodo = await queryObject.query(
       "UPDATE todo SET description = $1 WHERE todo_id = $2",
       [description, id]
     );
@@ -107,7 +108,7 @@ app.put("/todos/:id", async (req, res) => {
 app.delete("/todos/:id", async (req, res) => {
   try {
     const { id } = req.params;
-    const deleteTodo = await pool.query("DELETE FROM todo WHERE todo_id = $1", [
+    const deleteTodo = await queryObject.query("DELETE FROM todo WHERE todo_id = $1", [
       id
     ]);
     res.json("Todo was deleted!");

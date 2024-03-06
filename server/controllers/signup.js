@@ -1,36 +1,28 @@
 import { queryObject } from '../models/model.js';
 
-export const signup = (req, res, next) => {
+export const signup = async (req, res, next) => {
   const {userId} = req.body;
   
-  const insertUserQuery = `
-    INSERT INTO public."User" ("feed_id")
-    VALUES (DEFAULT)
-    RETURNING "id"`
+  const query = {
+    text: `INSERT INTO public."User" ("feed_id")
+    VALUES ($1)`,
+    values: [userId],
+  };
 
-  queryObject.query(insertUserQuery, [userId], (error, userResult) => {
-    if (error) {
-      return next(error);
-    }
+  // const insertUserQuery = `
+  //   INSERT INTO public."User" ("feed_id")
+  //   VALUES (DEFAULT)
+  //   RETURNING "id"`
 
-    const userId = userResult.rows[0].id;
-  
-    const inserFeedQuery = `
-      INSERT INTO public."Feed" ("userId")
-      VALUES ($1)
-      RETURNING "id"`
-
-    queryObject.query(inserFeedQuery, [userId], (error, feedResult) => {
-
-      if (error) {
-        return next(error);
-      }
-
-      const feedId = feedResult.rows[0].id;
-
-      console.log(`New user with id ${userId} and ${feedId}`);
-
+    try{
+      const data = await queryObject.query(query);
+      console.log(data);
+      return next();
+    } catch(error){
+      next({
+        log: `controller error: ${error}`,
+        message: { err: 'Error occured in Controllo login.'},
+        status: 500,
     })
-
-  })
+    }
 };

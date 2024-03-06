@@ -1,18 +1,11 @@
 'use client';
-import { UserButton } from '@clerk/nextjs';
+import { UserButton, currentUser } from '@clerk/nextjs';
 import { useState, useEffect } from 'react';
 import { AiOutlinePlus } from 'react-icons/ai';
 import Feed from './Feed';
 import Link from 'next/link';
 
-{
-  /* <header class="max-w-[1400px] flex flex-1 flex-col z-20">
-	<div
-		class="fixed top-0 bg-background/55 backdrop-blur-sm mx-auto w-full flex items-center justify-between p-4 py-4"
-	></div> */
-}
 
-// class="relative bg-background text-white text-sm sm:text-base flex flex-col min-h-screen"
 
 export default function TodosPage() {
   const [feedData, setFeedData] = useState({
@@ -36,19 +29,55 @@ export default function TodosPage() {
 
   // fetch feed on load (useEffect with []?)
   // populate feed object
+  let userId;
+
+
   useEffect(() => {
+    async function getCurrentUserID(): Promise<string | undefined> {
+      try {
+        const user = await currentUser();
+        
+        if (!user) throw new Error('not logged in');
+
+        userId = await getCurrentUserID();
+
+        return user?.id;
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    // async function checkIfUserStored() {
+    //   const response = await fetch('NOSQL.Server')
+
+    //   if (!response.ok) {
+    //     throw new Error('Failed to fetch data')
+    //   }
+
+    //   return response.json()
+    // }
+
     //get our user's data
-    async function getUserData() {
-      const response = await fetch('NOSQL.Server')
+    
+
+    async function getUserData(id: string) {
+      console.log('clerk id', id);
+      const postBody = {userId: id}
+      const response = await fetch('http://localhost:3001/signup', {
+        method: 'POST', 
+        body: JSON.stringify(postBody),
+        headers: {'Content-Type': 'application/json'}
+      }) 
 
       if (!response.ok) {
         throw new Error('Failed to fetch data')
       }
-
-      return response.json()
+      const resData =  await response.json()
+      // setFeedData(resData) //Is sending...forEach requires adjustment
     }
-
-    getUserData()
+    // check if user exists by passing in id from clerk to new endpoint
+    
+    getUserData(userId);
     console.log('loaded');
   }, []);
 
@@ -81,7 +110,7 @@ export default function TodosPage() {
             Create a To-Do List
             <AiOutlinePlus className='ml-2' size={15} />
           </button>
-          <Feed feedData={feedData} />
+          <Feed feedData={feedData} setFeedData={setFeedData} />
         </div>
       </main>
     </div>

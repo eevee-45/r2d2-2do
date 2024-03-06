@@ -4,18 +4,29 @@ import Link from 'next/link';
 export default function Home() {
   return (
     <div>
-      <div className="hero min-h-screen" style={{backgroundImage: 'url(https://i.pinimg.com/originals/69/c4/82/69c4824df4eaeaf53d3954ea855b1019.jpg)'}}>
-  <div className="hero-overlay bg-opacity-60"></div>
-  <div className="hero-content text-center text-neutral-content">
-    <div className="max-w-md">
-      <h1 className="mb-5 text-5xl font-bold">Welcome to &nbsp;R2D2-2DO</h1>
-      <p className="mb-5">Too many things to do and feeling overwhelmed? &nbsp;&nbsp;Organize your 2DO with R2D2!</p>
-      <Link href="/dashboard">
-      <button className="btn btn-primary">Continue to Dashboard</button>
-      </Link>
-    </div>
-  </div>
-</div>
+      <div
+        className='hero min-h-screen'
+        style={{
+          backgroundImage:
+            'url(https://i.pinimg.com/originals/69/c4/82/69c4824df4eaeaf53d3954ea855b1019.jpg)',
+        }}
+      >
+        <div className='hero-overlay bg-opacity-60'></div>
+        <div className='hero-content text-center text-neutral-content'>
+          <div className='max-w-md'>
+            <h1 className='mb-5 text-5xl font-bold'>
+              Welcome to &nbsp;R2D2-2DO
+            </h1>
+            <p className='mb-5'>
+              Too many things to do and feeling overwhelmed?
+              &nbsp;&nbsp;Organize your 2DO with R2D2!
+            </p>
+            <Link href='/dashboard'>
+              <button className='btn btn-primary'>Continue to Dashboard</button>
+            </Link>
+          </div>
+        </div>
+      </div>
 
       <main className='flex-1 flex flex-col items-center justify-center p-24 pt-0'>
         <div className='mb-32 grid text-center lg:max-w-5xl lg:w-full lg:mb-0 lg:grid-cols-3 lg:text-left'>
